@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- 因为这个是login页面，所以每个地址都会默认加上一个login,所以访问页面使用../  -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="./login.css">
+    <title>登录</title>
+</head>
+<body>
+    <canvas id="can"></canvas>
+    <div class="box center_middle">
+        <form class="center_middle loginForm" action="/login" method="post">
+            <div class="form-group row">
+                <label for="userName" class="col-sm-2 col-form-label">账号:</label>
+                <div class="col-sm-10">
+                <input type="text" class="form-control" id="userName" name="userName" placeholder="请输入账号" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="password" class="col-sm-2 col-form-label">密码:</label>
+                <div class="col-sm-10">
+                <input type="password" class="form-control" id="password" name="password" placeholder="请输入密码" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-10">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="gridCheck1">
+                        <label class="form-check-label" for="gridCheck1">
+                            记住密码
+                        </label>
+                        <a href="#">忘记密码！</a>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-8 offset-sm-4">
+                <button class="btn btn-primary" type="submit">登录</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="" class="btn btn-primary" id="register" onclick="return false">注册</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- 注册 -->
+        <form class="center_middle registerForm" action="/login/register" method="post" onsubmit="return false">
+            <div class="form-group row">
+                <label for="name" class="col-sm-3 col-form-label">账号:</label>
+                <div class="col-sm-9">
+                <input type="name" class="form-control" id="userName" name="userName" placeholder="请输入账号" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="password" class="col-sm-3 col-form-label">密码:</label>
+                <div class="col-sm-9">
+                <input type="password" class="form-control" id="password" name="password" placeholder="请输入密码" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="password2" class="col-sm-3 col-form-label">确认密码:</label>
+                <div class="col-sm-9">
+                <input type="password" class="form-control" id="password2" placeholder="请再次输入密码" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-9 offset-sm-3">
+                <button type="submit" class="btn btn-primary" id="back">返回</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <button class="btn btn-primary" id="registerSave">注册</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/dat.gui.js"></script>
+    <script src="./login.js"></script>
+</body>
+</html>

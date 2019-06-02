@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>新闻页</title>
+<style>
+    html,body {
+        height: 100%;
+    }
+</style>
+</head>
+<body>
+<div class="container w-100 h-100">
+    <div class="w-100 h-100 bg-light">
+        <div class="p-5" id="newsContent">
+            <!--$data['data']获取index.art页面传递过来的data数据-->
+            {{each $data['data'] as value index}}
+                <div class="item">
+                    <h5>{{value.title}} <small class="float-right">{{value.time}}</small></h5>
+                    <span>{{value.content}}</span>
+                    <hr>
+                </div>
+            {{/each}}
+        </div>
+        <p class="text-center" id="loadMore" style="cursor:pointer">加载更多</p >
+    </div>
+</div>
+</body>
+</html>
+<script src="/js/jquery.min.js"></script>
+<script>
+    //每次显示两条
+    $('#loadMore').on('click',function(){
+        // $('#newsContent').append()
+        var itemsLen = $('.item').length
+        var html = ''
+        $.ajax({
+            url:'/news/more',
+            type:'POST',
+            data:{number:itemsLen},
+            success:function(result){
+                var data = result.data;
+                if(data.length == 0){
+                    $('#loadMore').html('已无更多数据。。。')
+                }
+                for(var i = 0; i < data.length; i++){
+                    html+= `<div style="display:none" class="insert item">
+                                <h5>${data[i].title} <small class="float-right">${data[i].time}</small></h5>
+                                <span>${data[i].content}</span>
+                                <hr>
+                            </div>`
+                }
+                $('#newsContent').append(html) 
+                $('.insert').show('slow');
+            }
+        })
+    })
+</script>
+
+
+
+

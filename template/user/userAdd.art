@@ -1,0 +1,56 @@
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#userAdd">
+    新增
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="userAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">用户新增</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="userAddForm">
+                <div class="form-group row">
+                    <label for="name" class="col-sm-2 col-form-label">姓名：</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="name" placeholder="请输入姓名">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="code" class="col-sm-2 col-form-label">编码：</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="code" placeholder="请输入编码">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="industry" class="col-sm-2 col-form-label">行业：</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="industry" placeholder="请输入行业">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="job" class="col-sm-2 col-form-label">职位：</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="job" placeholder="请输入职位">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="city" class="col-sm-2 col-form-label">城市：</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="city" placeholder="请输入城市">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+            <button type="button" class="btn btn-primary" id="add" data-dismiss="modal">保存</button>
+        </div>
+        </div>
+    </div>
+</div>

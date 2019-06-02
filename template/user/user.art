@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/bootstrapValidator.css">
+    <link rel="stylesheet" href="/css/alert.css">
+    <title>用户信息</title>
+    <style>
+        .alert-btn-box {
+            height:35px;
+        }
+    </style>
+</head>
+<body>
+    <div class="py-3">
+        {{include './userAdd.art'}}
+        {{include './userEdit.art'}}
+        <button type="button" class="btn btn-primary editBtn" id="refresh">刷新</button>
+    </div>
+    <div>
+        <table  class="table table-primary" id="table"></table>
+    </div>
+</body>
+</html>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap-table.min.js"></script>
+<script src="/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="/js/bootstrapValidator.min.js"></script>
+<script src="/js/alert.js"></script>
+<script>
+    $('#table').bootstrapTable({
+        url:'user/get_users',
+        toolbar: "#toolbar",
+        sidePagination: "true",
+        striped: true, // 是否显示行间隔色
+        // search : "true",
+        uniqueId: "ID",
+        pageSize: "10",
+        pagination: true, // 是否分页
+        sortable: false, // 是否启用排序
+        clickToSelect: true,
+        uniqueId: "id",
+        columns: [
+            {checkbox: true},
+            {
+                field: 'name',
+                title: '姓名'
+            },
+            {
+                field: 'code',
+                title: '编码'
+            },
+            {
+                field: 'industry',
+                title: '所属行业'
+            },
+            {
+                field: 'job',
+                title: '职位'
+            },
+             {
+                field: 'city',
+                title: '城市'
+            },
+            {
+                field: '',
+                title: '操作',
+                width: 120,
+                align: 'center',
+                valign: 'middle',
+                formatter:function(value, row, index){
+                    return '<button type="button" class="btn btn-primary del"  onclick=del('+row.id+')>删除</button>'
+                }
+            },
+
+        ]
+    });
+    $('#userAddForm').bootstrapValidator({
+　　　　message: 'This value is not valid',
+　      feedbackIcons: {
+　　　　　　　valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+　　　　},
+        fields: {
+            name: {
+                validators: {
+                    notEmpty: {
+                        message: '名称不能为空'
+                    }
+                }
+            },
+            code: {
+                validators: {
+                    notEmpty: {
+                        message: '编码不能为空'
+                    }
+                }
+            }
+        }
+    });
+    //新增保存
+    $('#add').on('click',function(){
+        var bootstrapValidator = $("#userAddForm").data('bootstrapValidator');
+        bootstrapValidator.validate();
+        if(bootstrapValidator.isValid()){
+            $.ajax({
+                url:'user/userAdd',
+                type:'POST',
+                data:$('#userAddForm').serialize(),
+                success:function(result){
+                    if(result.msg='success'){
+                        $('#table').bootstrapTable('refresh');
+                        jqueryAlert({
+                            'icon'    : 'img/right.png',
+                            'content' : '新增成功',
+                            'closeTime' : 2000,
+                        })
+                    }else{
+                        jqueryAlert({
+                            'icon'    : 'img/error.png',
+                            'content' : '新增失败',
+                            'closeTime' : 2000,
+                        })
+                    }
+                },
+                error:function(err){
+                    jqueryAlert({
+                        'icon'    : 'img/warning.png',
+                        'content' : '新增异常',
+                        'closeTime' : 2000,
+                    })
+                }
+            })
+        }
+    })
+    //修改前判断是否选中数据
+    $('#editBtn').on('click',function(){
+        var rows = $('#table').bootstrapTable('getAllSelections');
+        if(rows.length==1){
+            $('#userEditForm #id').val(rows[0].id);
+            $('#userEditForm #name').val(rows[0].name);
+            $('#userEditForm #code').val(rows[0].code);
+            $('#userEditForm #job').val(rows[0].job);
+            $('#userEditForm #city').val(rows[0].city);
+            $('#userEditForm #industry').val(rows[0].industry);
+        }else{
+            jqueryAlert({
+                'icon'    : 'img/warning.png',
+                'content' : '请选择一行数据',
+                'closeTime' : 2000,
+            });
+            return false;
+        }
+    });
+    //修改保存
+    $('#edit').on('click',function(){
+        $.ajax({
+            url:'user/userEdit',
+            type:'POST',
+            data:$('#userEditForm').serialize(),
+            success:function(result){
+                if(result.msg='success'){
+                    $('#table').bootstrapTable('refresh');
+                    jqueryAlert({
+                        'icon'    : 'img/right.png',
+                        'content' : '修改成功',
+                        'closeTime' : 2000,
+                    })
+                }else{
+                    jqueryAlert({
+                        'icon'    : 'img/error.png',
+                        'content' : '修改失败',
+                        'closeTime' : 2000,
+                    })
+                }
+            },
+            error:function(err){
+                jqueryAlert({
+                    'icon'    : 'img/warning.png',
+                    'content' : '修改异常',
+                    'closeTime' : 2000,
+                })
+            }
+        })
+    })
+    //删除
+    function del(id){
+        var dialog = jqueryAlert({
+			'title'   : '是否删除？',
+			'content' : '删除后不能恢复......',
+			'modal'   : true,
+			'buttons' :{
+				'确定' : function(){
+					dialog.close();
+                    $.ajax({
+                        url:'user/userDel',
+                        type:'POST',
+                        data:{id:id},
+                        success:function(result){
+                            if(result.msg='success'){
+                                $('#table').bootstrapTable('refresh');
+                                jqueryAlert({
+                                    'icon'    : 'img/right.png',
+                                    'content' : '删除成功',
+                                    'closeTime' : 2000,
+                                })
+                            }else{
+                                jqueryAlert({
+                                    'icon'    : 'img/error.png',
+                                    'content' : '删除失败',
+                                    'closeTime' : 2000,
+                                })
+                            }
+                        },
+                        error:function(err){
+                            jqueryAlert({
+                                'icon'    : 'img/warning.png',
+                                'content' : '删除异常',
+                                'closeTime' : 2000,
+                            })
+                        }
+                    })
+				},
+				'取消' : function(){
+					dialog.close()
+				}
+			}
+		})
+       
+    }
+    //刷新
+    $('#refresh').on('click',function(){
+        $('#table').bootstrapTable('refresh');
+    })
+</script>

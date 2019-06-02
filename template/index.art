@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <title>Chris_Wang</title>
+        <style>
+            .main_content {
+                margin-top:56px;
+            }
+        </style>
+    </head>
+<body>
+    <div class="container" style="height:3000px">
+        <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
+            <a class="navbar-brand" href="https://blog.csdn.net/Chris__wang" target="_blank">Chris_Wang</a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active nav_item_">
+                <a class="nav-link" href="/">用户信息</a>
+                </li>
+                <li class="nav-item nav_item_news">
+                <a class="nav-link" href="news">新闻列表</a>
+                </li>
+                <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    公司简介
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item nav_item_news_about" href="about">关于我们</a>
+                    <a class="dropdown-item" href="#">企业风采</a>
+                </div>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+            </div>
+        </nav>
+        <div class="main_content">
+            <!--根据路由跳转时传递的path数据，确定要加载的是哪个页面文件，后面的$data是传递给子组件的数据，其中routes/news.js文件处传递过data数据-->
+            {{include $data['path'] $data}}
+        </div>
+    </div>
+  </body>
+</html>
+<script src="/js/bootstrap.min.js"></script>
+<script>
+    //导航当前页高亮显示
+    var items = $('.nav-item');
+    var pathname = window.location.pathname
+    var pattern = new RegExp("/", "g");
+    var activeName = pathname.replace(pattern,'');
+    for(var i = 0; i < items.length; i++){
+        $(items[i]).removeClass('active')
+    }
+    $('.nav_item_'+activeName).addClass('active')
+</script>
